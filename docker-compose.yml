@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  mysql-db-produtos:
+    image: mysql:latest
+    container_name: mysql-db-produtos
+    environment:
+      MYSQL_ROOT_PASSWORD: techchallenge
+      MYSQL_DATABASE: goodburguer-produtos
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: techchallenge-produtos
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - techchallenge-produtos-network
+      
+  goodburguer-produtos:
+    image: felipecarvalhodesouza/goodburguer-produtos:1.0
+    ports:
+      - "8080:8080"
+    networks:
+      - techchallenge-network
+    depends_on:
+      - mysql-db-produtos
+
+networks:
+  techchallenge-produtos-network:
+
+volumes:
+  mysql-data:
