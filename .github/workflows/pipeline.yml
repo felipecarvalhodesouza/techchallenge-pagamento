@@ -1,0 +1,80 @@
+name: GoodBurguer (Pagamento) CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'adopt'
+
+      - name: Etapa de build
+        run: mvn clean compile
+        env:
+          LOG_LEVEL: 'error'
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: SonarCloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn verify sonar:sonar -Pcoverage -Dsonar.projectKey=felipecarvalhodesouza_techchallenge-pagamento -DskipTests
+        
+      - name: Etapa de empacotamento do projeto
+        run: mvn package -DskipTests
+        env:
+          LOG_LEVEL: 'error'
+
+      - name: Build Docker image
+        run: docker build -t felipecarvalhodesouza/goodburguer-pagamento:latest .
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push to Docker Hub
+        run: docker push felipecarvalhodesouza/goodburguer-pagamento:latest
+
+      - name: Setup AWS Kubectl
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
+
+      - name: Configure kubectl
+        run: aws eks --region us-east-1 update-kubeconfig --name goodburguer
+
+      - name: Deploy Keys
+        run: kubectl apply -f ./k8s/goodburguer-pagamento-keys.yaml
+
+      - name: Deploy Application
+        run: kubectl apply -f ./k8s/goodburguer-pagamento.yaml
+
+      - name: Deploy Service
+        run: kubectl apply -f ./k8s/goodburguer-pagamento-sv.yaml

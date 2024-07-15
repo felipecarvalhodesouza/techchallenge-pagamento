@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goodburguer-pagamento-deployment
+  labels:
+    app: goodburguer-pagamento-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: goodburguer-pagamento-app
+  template:
+    metadata:
+      labels:
+        app: goodburguer-pagamento-app
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+                - arm64
+      containers:
+      - name: goodburguer-pagamento
+        image: felipecarvalhodesouza/goodburguer-pagamento:latest
+        resources:
+            requests:
+              cpu: 500m
+              memory: 1024Mi
+            limits:
+              cpu: 2000m
+              memory: 2048Mi
+        ports:
+        - name: http
+          containerPort: 8080
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: DATABASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: documentdb-config
+                key: DATABASE_URL
