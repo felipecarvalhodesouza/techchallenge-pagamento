@@ -1,5 +1,7 @@
 package br.com.postech.pagamento.infraestrutura.helper;
 
+import java.util.logging.Logger;
+
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 import com.amazonaws.services.sqs.AmazonSQS;
@@ -7,9 +9,12 @@ import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.amazonaws.services.sqs.model.SendMessageResult;
 
+import br.com.postech.pagamento.application.usecases.PagamentoInteractor;
 import br.com.postech.pagamento.domain.Pagamento;
 
 public class SQSHelper {
+	
+	private static final Logger logger = Logger.getLogger(SQSHelper.class.getName());
 
 	public void enviarMensagem(Pagamento pagamento) {
         AmazonSQS sqs = AmazonSQSClientBuilder.standard()
@@ -26,6 +31,8 @@ public class SQSHelper {
                 .withMessageBody(json);
 
         SendMessageResult sendMessage = sqs.sendMessage(sendMsgRequest);
-        System.out.println(sendMessage.getMessageId());
+        logger.warning(sendMessage.getMessageId());
+        logger.severe(sendMessage.getMessageId());
+        logger.info(sendMessage.getMessageId());
 	}
 }
