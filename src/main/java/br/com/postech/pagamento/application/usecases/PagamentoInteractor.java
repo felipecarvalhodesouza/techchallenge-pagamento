@@ -5,13 +5,16 @@ import br.com.postech.pagamento.domain.Pagamento;
 import br.com.postech.pagamento.domain.enumeration.StatusPagamento;
 import br.com.postech.pagamento.domain.exception.PagamentoInexistenteException;
 import br.com.postech.pagamento.domain.exception.StatusPagamentoInvalidoException;
+import br.com.postech.pagamento.infraestrutura.helper.SQSHelper;
 
 public class PagamentoInteractor{
 	
 	private final PagamentoGateway pagamentoGateway;
+	private final SQSHelper sqsHelper;
 	
-	public PagamentoInteractor(PagamentoGateway pagamentoGateway) {
+	public PagamentoInteractor(PagamentoGateway pagamentoGateway, SQSHelper sqsHelper) {
 		this.pagamentoGateway = pagamentoGateway;
+		this.sqsHelper = sqsHelper;
 	}
 	
 	public Pagamento getPagamentoPor(String pagamentoId) throws PagamentoInexistenteException {
@@ -23,7 +26,12 @@ public class PagamentoInteractor{
 	}
 	
 	public Pagamento inserirPagamento(Pagamento pagamento) {
-		return pagamentoGateway.inserirPagamento(pagamento);
+		Pagamento pagamentoInserido = pagamentoGateway.inserirPagamento(pagamento);
+		
+		//Enviar mensagem para serviço de preparo
+		sqsHelper.enviarMensagem(pagamentoInserido);
+
+		return pagamentoInserido;
 	}
 
 	public void aprovarPagamento(String pagamentoId) throws StatusPagamentoInvalidoException, PagamentoInexistenteException {

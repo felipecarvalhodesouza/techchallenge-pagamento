@@ -20,11 +20,15 @@ import br.com.postech.pagamento.domain.Pagamento;
 import br.com.postech.pagamento.domain.enumeration.StatusPagamento;
 import br.com.postech.pagamento.domain.exception.PagamentoInexistenteException;
 import br.com.postech.pagamento.domain.exception.StatusPagamentoInvalidoException;
+import br.com.postech.pagamento.infraestrutura.helper.SQSHelper;
 
 class PagamentoInteractorTest {
 
     @Mock
     private PagamentoGateway pagamentoGateway;
+    
+    @Mock
+    private SQSHelper sqsHelper;
 
     @InjectMocks
     private PagamentoInteractor pagamentoInteractor;

@@ -40,7 +40,7 @@ public class PagamentoController {
 		return pagamentoInteractor.getStatusPagamentoPedido(pedidoId);
 	}
 	
-	@Operation(summary = "Incluir o registrro de um pagamento")
+	@Operation(summary = "Incluir o registro de um pagamento")
 	@PostMapping
 	@ApiResponse(responseCode = "201")
 	public ResponseEntity<Pagamento> inserirPagamento(@RequestBody Pagamento pagamento) {
