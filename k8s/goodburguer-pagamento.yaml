@@ -14,6 +14,7 @@ spec:
       labels:
         app: goodburguer-pagamento-app
     spec:
+      serviceAccountName: service-account
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

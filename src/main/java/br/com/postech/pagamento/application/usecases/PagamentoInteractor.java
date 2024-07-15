@@ -1,5 +1,6 @@
 package br.com.postech.pagamento.application.usecases;
 
+
 import br.com.postech.pagamento.application.gateway.PagamentoGateway;
 import br.com.postech.pagamento.domain.Pagamento;
 import br.com.postech.pagamento.domain.enumeration.StatusPagamento;
@@ -8,7 +9,7 @@ import br.com.postech.pagamento.domain.exception.StatusPagamentoInvalidoExceptio
 import br.com.postech.pagamento.infraestrutura.helper.SQSHelper;
 
 public class PagamentoInteractor{
-	
+
 	private final PagamentoGateway pagamentoGateway;
 	private final SQSHelper sqsHelper;
 	
