@@ -41,7 +41,7 @@ jobs:
       - name: SonarCloud analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn verify sonar:sonar -Pcoverage -Dsonar.projectKey=felipecarvalhodesouza_techchallenge-pagamento -DskipTests
+        run: mvn verify sonar:sonar -Pcoverage -Dsonar.projectKey=felipecarvalhodesouza_techchallenge-pagamento
         
       - name: Etapa de empacotamento do projeto
         run: mvn package -DskipTests
