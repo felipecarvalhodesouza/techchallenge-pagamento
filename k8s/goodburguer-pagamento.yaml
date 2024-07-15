@@ -56,8 +56,8 @@ spec:
                 name: mysql-db-pagamento-config
                 key: DATABASE_PASSWORD
           - name: AWS_ACCESS_KEY_ID
-            value: "ASIAY6WOPHJJPYSL4HBQ"
+            value: "${AWS_ACCESS_KEY_ID}"
           - name: AWS_SECRET_ACCESS_KEY
-            value: "CVIk9FPc7O9qyPTRTYCppiaEeDKILt8nFN06pUcw"
+            value: "${AWS_SECRET_ACCESS_KEY}"
           - name: AWS_SESSION_TOKEN
-            value: "IQoJb3JpZ2luX2VjEP7//////////wEaCXVzLXdlc3QtMiJGMEQCIEkgK3OYoIqmyYvVcypc+i0CELpoEkrw8jn5YONkI+fuAiAa+J6HO0iRG/2p3BT15Adhk9tteyQXFlddHjbxetoz8Cq6AgjH//////////8BEAEaDDYxNTY4NzA3NjQzNCIMwVywD8a1Spuj5NfNKo4CQ+tlBeSG6y1/I8RdAw+9GS3HWxnwU3+UlVuIpmXxmEEEcx76j6eDMZKousQuRj2NqK6TrSWmy9wyDW8jCrHJgF5SDxhdZVh3KkVKTITZNFhGQKAx0rd9YWFUlOmopR+FpbL3bPu8+OFgnFdo9W8+c66gmt+XlvPy00k3Hv32Z9BTxv8y3+PDmRvKC96IJRtwCbbKD1gFi+i9zNkvoQlzFCLGRyGggRmM+1rg382AL9X6f2u1kDuujcI1x5MDKyuvW1BT79+YOzd7cv6jaUzTACumb+d7+kc9mxgGCNr4GlHPHFeKY8qcVrYuyAVymYrbw/a78rcFVC9GkS0ETNY+QfyT1+J3wtQvvbm4a6SqMMSs1rQGOp4Bf1nWDmLS7eMpOILMvtSGCsQAFi8uERdRv9eEa1s00G2ku583HeF4Xvu6jErusy373dboN/3t77v/IIUdXqlvfJuDwjSOW1Yq9q4YV6ionnYNTDe7Q4PI68hrm5vsvliNzSuKV96T2ue2MJejSWGY53fkPcH/efVfK6sDDKZwa5J4V4G/hHLPabzDi9NGl/2qEpb/BqftxPv4FYlLgsg="
+            value: "${AWS_SESSION_TOKEN}"
