@@ -5,6 +5,7 @@ import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
+import com.amazonaws.services.sqs.model.SendMessageResult;
 
 import br.com.postech.pagamento.domain.Pagamento;
 
@@ -24,6 +25,7 @@ public class SQSHelper {
                 .withQueueUrl(queueUrl)
                 .withMessageBody(json);
 
-        sqs.sendMessage(sendMsgRequest);
+        SendMessageResult sendMessage = sqs.sendMessage(sendMsgRequest);
+        System.out.println(sendMessage.getMessageId());
 	}
 }
