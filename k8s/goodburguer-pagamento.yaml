@@ -42,5 +42,5 @@ spec:
           - name: DATABASE_URL
             valueFrom:
               configMapKeyRef:
-                name: mysql-db-secret
+                name: mysql-db-config
                 key: DATABASE_URL
