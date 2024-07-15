@@ -80,3 +80,6 @@ jobs:
 
       - name: Deploy Service
         run: kubectl apply -f ./k8s/goodburguer-pagamento-sv.yaml
+
+      - name: Deploy Service Account
+        run: kubectl apply -f ./k8s/service-account.yaml
