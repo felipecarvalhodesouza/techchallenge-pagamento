@@ -26,12 +26,7 @@ public class PagamentoInteractor{
 	}
 	
 	public Pagamento inserirPagamento(Pagamento pagamento) {
-		Pagamento pagamentoInserido = pagamentoGateway.inserirPagamento(pagamento);
-		
-		//Enviar mensagem para serviço de preparo
-		sqsHelper.enviarMensagem(pagamentoInserido);
-
-		return pagamentoInserido;
+		return pagamentoGateway.inserirPagamento(pagamento);
 	}
 
 	public void aprovarPagamento(String pagamentoId) throws StatusPagamentoInvalidoException, PagamentoInexistenteException {
@@ -44,7 +39,7 @@ public class PagamentoInteractor{
 		validarStatusPagamento(pagamento);
 		pagamentoGateway.aprovarPagamento(String.valueOf(pagamento.getId()));
 		
-		// enviar mensagem para a fila de preparo TODO
+		sqsHelper.enviarMensagem(pagamento);
 	}
 	
 	public void recusarPagamento(String pagamentoId) throws StatusPagamentoInvalidoException, PagamentoInexistenteException {
