@@ -9,9 +9,9 @@
 		<version>3.2.1</version>
 	</parent>
 	<groupId>br.com.postech</groupId>
-	<artifactId>pagamento</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>produto</name>
+	<artifactId>techchallenge-pagamento</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>techchallenge-pagamento</name>
 	<description>Tech Challenge 5SOAT - Microserviço de Pagamento</description>
 	<properties>
 		<java.version>17</java.version>

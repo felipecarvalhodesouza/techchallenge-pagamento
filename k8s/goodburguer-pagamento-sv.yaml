@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: goodburguer-pagamento-service
+  labels:
+    app: goodburguer-pagamento-app
+spec:
+  type: LoadBalancer
+  selector:
+    app: goodburguer-pagamento-app
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8080
