@@ -42,5 +42,5 @@ spec:
           - name: DATABASE_URL
             valueFrom:
               configMapKeyRef:
-                name: documentdb-config
+                name: mysql-db-secret
                 key: DATABASE_URL
