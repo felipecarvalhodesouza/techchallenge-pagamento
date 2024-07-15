@@ -18,7 +18,7 @@ public class SQSHelper {
 
         String queueUrl = "https://sqs.us-east-1.amazonaws.com/615687076434/techchallenge-preparo-sqs";
 
-		String json = String.format("{\"id\": \"%d\"}", String.valueOf(pagamento.getId()));
+		String json = String.format("{\"id\": \"%s\"}", String.valueOf(pagamento.getId()));
 
         SendMessageRequest sendMsgRequest = new SendMessageRequest()
                 .withQueueUrl(queueUrl)
