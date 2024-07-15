@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: mysql-db-config
+  name: mysql-db-pagamento-config
 data:
   DATABASE_URL: jdbc:mysql://goodburguer.c8nvenlrrp9x.us-east-1.rds.amazonaws.com:3306/goodburguer_pagamento
   MYSQL_DATABASE: goodburguer
@@ -10,7 +10,7 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: mysql-db-secret
+  name: mysql-db-pagamento-secret
 type: Opaque
 data:
   DATABASE_USERNAME: YWRtaW4=

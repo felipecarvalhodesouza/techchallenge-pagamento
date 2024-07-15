@@ -42,5 +42,15 @@ spec:
           - name: DATABASE_URL
             valueFrom:
               configMapKeyRef:
-                name: mysql-db-config
+                name: mysql-db-pagamento-config
                 key: DATABASE_URL
+          - name: DATABASE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mysql-db-pagamento-secret
+                key: DATABASE_USERNAME
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: mysql-db-pagamento-config
+                key: DATABASE_PASSWORD
