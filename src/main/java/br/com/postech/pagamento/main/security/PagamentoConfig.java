@@ -7,15 +7,15 @@ import br.com.postech.pagamento.application.gateway.PagamentoGateway;
 import br.com.postech.pagamento.application.usecases.PagamentoInteractor;
 import br.com.postech.pagamento.infraestrutura.gateway.PagamentoEntityMapper;
 import br.com.postech.pagamento.infraestrutura.gateway.PagamentoRepositoryGateway;
-import br.com.postech.pagamento.infraestrutura.helper.SQSHelper;
+import br.com.postech.pagamento.infraestrutura.helper.HttpHelper;
 import br.com.postech.pagamento.infraestrutura.persistence.PagamentoRepository;
 
 @Configuration
 public class PagamentoConfig {
 
 	@Bean
-	PagamentoInteractor createPagamentoInteractor(PagamentoGateway pagamentoGateway, SQSHelper sqsHelper) {
-		return new PagamentoInteractor(pagamentoGateway, sqsHelper);
+	PagamentoInteractor createPagamentoInteractor(PagamentoGateway pagamentoGateway, HttpHelper httpHelper) {
+		return new PagamentoInteractor(pagamentoGateway, httpHelper);
 	}
 
 	@Bean
@@ -29,7 +29,7 @@ public class PagamentoConfig {
 	}
 	
 	@Bean
-	SQSHelper createSQSHelper() {
-		return new SQSHelper();
+	HttpHelper HttpHelper() {
+		return new HttpHelper();
 	}
 }

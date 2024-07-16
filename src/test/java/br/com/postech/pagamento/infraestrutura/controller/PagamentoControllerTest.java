@@ -7,6 +7,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -76,7 +78,7 @@ class PagamentoControllerTest {
 	}
 
 	@Test
-	void deveAprovarPagamento() throws StatusPagamentoInvalidoException, PagamentoInexistenteException {
+	void deveAprovarPagamento() throws StatusPagamentoInvalidoException, PagamentoInexistenteException, IOException {
 		String pedidoId = "123456789";
 
 		given()
