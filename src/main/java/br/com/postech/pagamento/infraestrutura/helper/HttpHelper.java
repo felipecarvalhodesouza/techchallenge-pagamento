@@ -9,7 +9,7 @@ import java.net.URL;
 
 public class HttpHelper {
 
-    private final String API_URL = "http://ad1b7891a07a84b3aae6d178d1cc98db-1751645578.us-east-1.elb.amazonaws.com:8083/";
+    private final String API_URL = "http://ad1b7891a07a84b3aae6d178d1cc98db-1751645578.us-east-1.elb.amazonaws.com:8083/pedidos";
     
     public String sendPostRequest(String requestBody) throws IOException {
     	return sendPostRequest(requestBody, (HttpURLConnection) new URL(API_URL).openConnection());
