@@ -7,6 +7,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,7 @@ import br.com.postech.pagamento.domain.Pagamento;
 import br.com.postech.pagamento.domain.enumeration.StatusPagamento;
 import br.com.postech.pagamento.domain.exception.PagamentoInexistenteException;
 import br.com.postech.pagamento.domain.exception.StatusPagamentoInvalidoException;
-import br.com.postech.pagamento.infraestrutura.helper.SQSHelper;
+import br.com.postech.pagamento.infraestrutura.helper.HttpHelper;
 
 class PagamentoInteractorTest {
 
@@ -28,7 +29,7 @@ class PagamentoInteractorTest {
     private PagamentoGateway pagamentoGateway;
     
     @Mock
-    private SQSHelper sqsHelper;
+    private HttpHelper httpHelpr;
 
     @InjectMocks
     private PagamentoInteractor pagamentoInteractor;
@@ -51,7 +52,7 @@ class PagamentoInteractorTest {
     }
 
     @Test
-    void deveAprovarPagamento() throws StatusPagamentoInvalidoException, PagamentoInexistenteException {
+    void deveAprovarPagamento() throws StatusPagamentoInvalidoException, PagamentoInexistenteException, IOException {
         String pagamentoId = "123456";
         Pagamento pagamento = new Pagamento();
         pagamento.setId(Long.valueOf(pagamentoId));

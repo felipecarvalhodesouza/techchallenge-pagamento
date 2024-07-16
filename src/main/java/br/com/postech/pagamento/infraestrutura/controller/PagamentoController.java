@@ -1,5 +1,6 @@
 package br.com.postech.pagamento.infraestrutura.controller;
 
+import java.io.IOException;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,7 @@ public class PagamentoController {
 	@Operation(summary = "Aprovar pagamento")
 	@PutMapping(path = "/{pedidoId}/aprovar")
 	@ApiResponse(responseCode = "200")
-	public void aprovarPagamento(@PathVariable String pedidoId) throws StatusPagamentoInvalidoException, NumberFormatException, PagamentoInexistenteException {
+	public void aprovarPagamento(@PathVariable String pedidoId) throws StatusPagamentoInvalidoException, NumberFormatException, PagamentoInexistenteException, IOException {
 		pagamentoInteractor.aprovarPagamento(pedidoId);
 	}
 

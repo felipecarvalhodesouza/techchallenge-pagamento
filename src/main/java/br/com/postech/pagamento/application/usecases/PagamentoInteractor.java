@@ -1,21 +1,23 @@
 package br.com.postech.pagamento.application.usecases;
 
 
+import java.io.IOException;
+
 import br.com.postech.pagamento.application.gateway.PagamentoGateway;
 import br.com.postech.pagamento.domain.Pagamento;
 import br.com.postech.pagamento.domain.enumeration.StatusPagamento;
 import br.com.postech.pagamento.domain.exception.PagamentoInexistenteException;
 import br.com.postech.pagamento.domain.exception.StatusPagamentoInvalidoException;
-import br.com.postech.pagamento.infraestrutura.helper.SQSHelper;
+import br.com.postech.pagamento.infraestrutura.helper.HttpHelper;
 
 public class PagamentoInteractor{
 
 	private final PagamentoGateway pagamentoGateway;
-	private final SQSHelper sqsHelper;
+	private final HttpHelper httpHelper;
 	
-	public PagamentoInteractor(PagamentoGateway pagamentoGateway, SQSHelper sqsHelper) {
+	public PagamentoInteractor(PagamentoGateway pagamentoGateway, HttpHelper httpHelper) {
 		this.pagamentoGateway = pagamentoGateway;
-		this.sqsHelper = sqsHelper;
+		this.httpHelper = httpHelper;
 	}
 	
 	public Pagamento getPagamentoPor(String pagamentoId) throws PagamentoInexistenteException {
@@ -30,7 +32,7 @@ public class PagamentoInteractor{
 		return pagamentoGateway.inserirPagamento(pagamento);
 	}
 
-	public void aprovarPagamento(String pagamentoId) throws StatusPagamentoInvalidoException, PagamentoInexistenteException {
+	public void aprovarPagamento(String pagamentoId) throws StatusPagamentoInvalidoException, PagamentoInexistenteException, IOException {
 		Pagamento pagamento = pagamentoGateway.getPagamentoPor(pagamentoId);
 		
 		if(pagamento == null) {
@@ -40,7 +42,7 @@ public class PagamentoInteractor{
 		validarStatusPagamento(pagamento);
 		pagamentoGateway.aprovarPagamento(String.valueOf(pagamento.getId()));
 		
-		sqsHelper.enviarMensagem(pagamento);
+		httpHelper.sendPostRequest(String.format("{\"id\": \"%s\"}", String.valueOf(pagamento.getId())));
 	}
 	
 	public void recusarPagamento(String pagamentoId) throws StatusPagamentoInvalidoException, PagamentoInexistenteException {
