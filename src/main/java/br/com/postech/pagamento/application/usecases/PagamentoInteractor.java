@@ -2,22 +2,25 @@ package br.com.postech.pagamento.application.usecases;
 
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.postech.pagamento.application.gateway.PagamentoGateway;
 import br.com.postech.pagamento.domain.Pagamento;
 import br.com.postech.pagamento.domain.enumeration.StatusPagamento;
 import br.com.postech.pagamento.domain.exception.PagamentoInexistenteException;
 import br.com.postech.pagamento.domain.exception.StatusPagamentoInvalidoException;
-import br.com.postech.pagamento.infraestrutura.helper.HttpHelper;
+import br.com.postech.pagamento.domain.repository.IPagamentoQueueAdapter;
 
 public class PagamentoInteractor{
 
 	private final PagamentoGateway pagamentoGateway;
-	private final HttpHelper httpHelper;
+	private final IPagamentoQueueAdapter pagamentoQueueAdapter;
 	
-	public PagamentoInteractor(PagamentoGateway pagamentoGateway, HttpHelper httpHelper) {
+	public PagamentoInteractor(PagamentoGateway pagamentoGateway, IPagamentoQueueAdapter pagamentoQueueAdapter) {
 		this.pagamentoGateway = pagamentoGateway;
-		this.httpHelper = httpHelper;
+		this.pagamentoQueueAdapter = pagamentoQueueAdapter;
 	}
 	
 	public Pagamento getPagamentoPor(String pagamentoId) throws PagamentoInexistenteException {
@@ -32,6 +35,7 @@ public class PagamentoInteractor{
 		return pagamentoGateway.inserirPagamento(pagamento);
 	}
 
+	@Transactional
 	public void aprovarPagamento(String pagamentoId) throws StatusPagamentoInvalidoException, PagamentoInexistenteException, IOException {
 		Pagamento pagamento = pagamentoGateway.getPagamentoPor(pagamentoId);
 		
@@ -42,9 +46,14 @@ public class PagamentoInteractor{
 		validarStatusPagamento(pagamento);
 		pagamentoGateway.aprovarPagamento(String.valueOf(pagamento.getId()));
 		
-		httpHelper.sendPostRequest(String.format("{\"id\": \"%s\"}", String.valueOf(pagamento.getId())));
+		try {
+			pagamentoQueueAdapter.publicarAprovacaoPagamento(String.format("{\"id\": \"%s\"}", String.valueOf(pagamento.getId())));
+		} catch (IOException | TimeoutException e) {
+			throw new RuntimeException("Erro ao aprovar pagamento");
+		}
 	}
 	
+	@Transactional
 	public void recusarPagamento(String pagamentoId) throws StatusPagamentoInvalidoException, PagamentoInexistenteException {
 		Pagamento pagamento = pagamentoGateway.getPagamentoPor(pagamentoId);
 		
@@ -54,6 +63,12 @@ public class PagamentoInteractor{
 
 		validarStatusPagamento(pagamento);
 		pagamentoGateway.recusarPagamento(String.valueOf(pagamento.getId()));
+		
+		try {
+			pagamentoQueueAdapter.publicarErroPagamento(String.format("{\"id\": \"%s\"}", String.valueOf(pagamento.getId())));
+		} catch (IOException | TimeoutException e) {
+			throw new RuntimeException("Erro ao aprovar pagamento");
+		}
 	}
 
 	private void validarStatusPagamento(Pagamento pagamento) throws StatusPagamentoInvalidoException {

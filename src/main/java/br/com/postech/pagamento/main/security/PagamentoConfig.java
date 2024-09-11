@@ -5,17 +5,18 @@ import org.springframework.context.annotation.Configuration;
 
 import br.com.postech.pagamento.application.gateway.PagamentoGateway;
 import br.com.postech.pagamento.application.usecases.PagamentoInteractor;
+import br.com.postech.pagamento.domain.repository.IPagamentoQueueAdapter;
 import br.com.postech.pagamento.infraestrutura.gateway.PagamentoEntityMapper;
 import br.com.postech.pagamento.infraestrutura.gateway.PagamentoRepositoryGateway;
-import br.com.postech.pagamento.infraestrutura.helper.HttpHelper;
 import br.com.postech.pagamento.infraestrutura.persistence.PagamentoRepository;
+import br.com.postech.pagamento.infraestrutura.queue.PagamentoQueueAdapter;
 
 @Configuration
 public class PagamentoConfig {
 
 	@Bean
-	PagamentoInteractor createPagamentoInteractor(PagamentoGateway pagamentoGateway, HttpHelper httpHelper) {
-		return new PagamentoInteractor(pagamentoGateway, httpHelper);
+	PagamentoInteractor createPagamentoInteractor(PagamentoGateway pagamentoGateway, IPagamentoQueueAdapter pagamentoQueueAdapter) {
+		return new PagamentoInteractor(pagamentoGateway, pagamentoQueueAdapter);
 	}
 
 	@Bean
@@ -29,7 +30,7 @@ public class PagamentoConfig {
 	}
 	
 	@Bean
-	HttpHelper HttpHelper() {
-		return new HttpHelper();
+	IPagamentoQueueAdapter pagamentoQueueAdapter() {
+		return new PagamentoQueueAdapter();
 	}
 }
