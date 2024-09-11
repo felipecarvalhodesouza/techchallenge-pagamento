@@ -49,6 +49,7 @@ public class PagamentoInteractor{
 		try {
 			pagamentoQueueAdapter.publicarAprovacaoPagamento(String.format("{\"id\": \"%s\"}", String.valueOf(pagamento.getId())));
 		} catch (IOException | TimeoutException e) {
+			e.printStackTrace();
 			throw new RuntimeException("Erro ao aprovar pagamento");
 		}
 	}
