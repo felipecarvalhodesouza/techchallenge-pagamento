@@ -42,7 +42,7 @@ public class PagamentoQueueAdapter implements IPagamentoQueueAdapter {
         try (Connection connection = factory.newConnection(); 
              Channel channel = connection.createChannel()) {
              
-            channel.queueDeclare(queue, false, false, false, null);
+            channel.queueDeclare(queue, true, false, false, null);
 
             channel.basicPublish("", queue, 
                                  MessageProperties.PERSISTENT_TEXT_PLAIN, 
