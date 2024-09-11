@@ -18,10 +18,10 @@ public class PagamentoQueueAdapter implements IPagamentoQueueAdapter {
 	private final static String QUEUE_APROVADO = "mensageria_pagamento_aprovado";
 	private final static String QUEUE_REPROVADO = "mensageria_erro_pagamento";
 	
-    @Value("${rabbitmq-host}")
+    @Value("${spring.rabbitmq.host}")
     private String rabbitmqhost;
     
-    @Value("${rabbitmq-port}")
+    @Value("${spring.rabbitmq.port}")
     private String rabbitmqport;
 	
 	@Override

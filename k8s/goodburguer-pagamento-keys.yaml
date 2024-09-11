@@ -3,9 +3,9 @@ kind: ConfigMap
 metadata:
   name: mysql-db-pagamento-config
 data:
-  DATABASE_URL: jdbc:mysql://goodburguer.c8nvenlrrp9x.us-east-1.rds.amazonaws.com:3306/goodburguer_pagamento
+  DATABASE_URL: ${DATABASE_URL}
   MYSQL_DATABASE: goodburguer
-  DATABASE_PASSWORD: Y6nX4nJrtOW7vyVNLfUe
+  DATABASE_PASSWORD: ${DATABASE_PASSWORD}
 ---
 apiVersion: v1
 kind: Secret

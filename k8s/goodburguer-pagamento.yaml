@@ -61,3 +61,7 @@ spec:
             value: "${AWS_SECRET_ACCESS_KEY}"
           - name: AWS_SESSION_TOKEN
             value: "${AWS_SESSION_TOKEN}"
+          - name: RABBITMQ_URL
+            value: "${RABBITMQ_URL}"
+          - name: RABBITMQ_PORT
+            value: "${RABBITMQ_PORT}"
